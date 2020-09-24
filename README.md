@@ -2,6 +2,7 @@
 Materials for the FSPM2020 yggdrasil workshop
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cropsinsilico/FSPM2020_yggdrasil_workshop/master)
+[comment]: <> ([![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cropsinsilico/FSPM2020_yggdrasil_workshop/master?filepath=plant.ipynb))
 
 References:
 
