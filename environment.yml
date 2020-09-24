@@ -1,0 +1,7 @@
+name: fspm-yggdrasil-environment
+channels:
+  - conda-forge
+dependencies:
+  - yggdrasil
+  - trimesh
+  - networkx
