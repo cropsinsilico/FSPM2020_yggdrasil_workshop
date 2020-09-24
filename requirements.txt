@@ -1,3 +1,3 @@
-yggdrasil
+yggdrasil-framework
 trimesh
 networkx
