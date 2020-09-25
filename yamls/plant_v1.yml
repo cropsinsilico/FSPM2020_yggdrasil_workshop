@@ -1,0 +1,5 @@
+model:
+  name: plant
+  language: python
+  args: [../models/plant_v1.py, 0.0, 28.0, 1.0]
+  client_of: light
