@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 cd yggdrasil
-python utils/install_from_requirements.py requirements.txt requirements_condaonly.py
+python utils/install_from_requirements.py conda requirements.txt requirements_condaonly.py
 python setup.py develop
 cd ../
 yggconfig
