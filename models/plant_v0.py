@@ -13,7 +13,7 @@ def run(mesh, tmin, tmax, tstep):
         mesh.vertices[:, 2] += mesh.vertices[:, 2] * scale
 
         # Save mesh for this timestep
-        filename = os.path.join(_dir, f'../output/mesh_{t}.obj')
+        filename = os.path.join(_dir, f'../output/mesh_{t:03.1f}.obj')
         with open(filename, 'w') as fd:
             mesh.export(fd, 'obj')
 

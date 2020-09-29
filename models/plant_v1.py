@@ -1,13 +1,15 @@
 import os
 import trimesh
 import argparse
+import numpy as np
 from yggdrasil import units
-from yggdrasil.languages.Python.YggInterface import YggRpcClient
+from yggdrasil.languages.Python.YggInterface import YggRpcClient, YggOutput
 
 _dir = os.path.dirname(os.path.realpath(__file__))
-light_rpc = YggRpcClient('light_plant')
 
 def run(mesh, tmin, tmax, tstep):
+    light_rpc = YggRpcClient('light_plant')
+    light_out = YggOutput('light')
     tmin = units.add_units(tmin, 'days')
     tmax = units.add_units(tmax, 'days')
     tstep = units.add_units(tstep, 'days')
@@ -15,23 +17,24 @@ def run(mesh, tmin, tmax, tstep):
     while t < tmax:
 
         # Get light data by calling light model
-        nvert = mesh.vertices.shape[0]
-        light = np.zeros(nvert)
-        for i in range(nvert):
-            flag, ilight = light_rpc.call(mesh.vertices[i, 2])
-            if not flag:
-                raise Exception("Error calling model for vertex %d" % i)
-            light[i] = ilight
-
+        flag, light = light_rpc.call(mesh.vertices[:, 2], t)
+        if not flag:
+            raise Exception("Error calling light model")
+        
         # Grow mesh
-        scale = light * t / units.add_units(300.0, 'days')
+        scale = 2.0 * light
         mesh.vertices[:, 2] += mesh.vertices[:, 2] * scale
-        mesh.visual.vertex_colors = trimesh.visual.linear_color_map(light)
 
         # Save mesh for this timestep
-        filename = os.path.join(_dir, f'../output/mesh_{t}.obj')
-        with open(filename, 'w') as fd:
+        suffix = '{:04.1f}'.format(units.get_data(t))
+        filename_mesh = os.path.join(_dir, f'../output/mesh_{suffix}.obj')
+        with open(filename_mesh, 'w') as fd:
             mesh.export(fd, 'obj')
+
+        # Send light to output
+        flag = light_out.send(light)
+        if not flag:
+            raise Exception("Error sending light to output")
 
         # Advance time step
         t += tstep

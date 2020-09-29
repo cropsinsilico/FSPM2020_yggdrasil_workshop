@@ -1,6 +1,6 @@
 model:
   name: light
-  language: python
-  args: ../models/light.py
+  language: c++
+  args: ../models/light.cpp
   function: light
   is_server: True
