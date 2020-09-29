@@ -1,4 +1,6 @@
 import os
+import glob
+import pickle
 import inspect
 from pygments import highlight
 from pygments.lexers import PythonLexer
@@ -40,3 +42,15 @@ def print_yaml(fname):
     with open(fname, 'r') as fd:
         lines = fd.read()
     print(highlight(lines, YamlLexer(), Terminal256Formatter()))
+
+
+def display_last_timestep(with_light=False):
+    last_mesh = sorted(glob.glob('output/mesh_*.obj'))[-1]
+    mesh = trimesh.load_mesh(last_mesh)
+    if with_light:
+        last_light = sorted(glob.glob('output/light_*.pkl'))[-1]
+        with open(last_light, 'rb') as fd:
+            light = pickle.load(fd)
+        mesh.visual.vertex_colors = trimesh.visual.interpolate(
+            light/max(light))
+    mesh.show()
