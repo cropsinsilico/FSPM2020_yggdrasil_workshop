@@ -1,0 +1,4 @@
+[submodule "yggdrasil"]
+	path = yggdrasil
+	url = https://github.com/cropsinsilico/yggdrasil.git
+	branch = model/osr

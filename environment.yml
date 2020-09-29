@@ -2,7 +2,7 @@ name: fspm-yggdrasil-environment
 channels:
   - conda-forge
 dependencies:
-  - yggdrasil
+  # - yggdrasil
   - trimesh
   - networkx
   - pygments
