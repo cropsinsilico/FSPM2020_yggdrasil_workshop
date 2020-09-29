@@ -5,4 +5,5 @@ python utils/install_from_requirements.py conda requirements.txt requirements_co
 python setup.py develop
 cd ../
 yggconfig
+python -c "import yggdrasil"
 ygginfo

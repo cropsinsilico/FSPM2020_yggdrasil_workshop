@@ -6,4 +6,4 @@ Materials for the FSPM2020 yggdrasil workshop
 
 References:
 
-["Plant_2"](https://sketchfab.com/3d-models/plants-2-f4636a80dcec4ca9a29f52fa32182721) by [FALCON](https://sketchfab.com/qewr1324) is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+["Plant-2"](https://sketchfab.com/3d-models/plants-2-f4636a80dcec4ca9a29f52fa32182721) by [FALCON](https://sketchfab.com/qewr1324) is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), converted into .obj format with texture and grouping removed.
