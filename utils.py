@@ -2,6 +2,7 @@ import os
 import glob
 import pickle
 import inspect
+import trimesh
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.lexers.data import YamlLexer
@@ -53,4 +54,4 @@ def display_last_timestep(with_light=False):
             light = pickle.load(fd)
         mesh.visual.vertex_colors = trimesh.visual.interpolate(
             light/max(light))
-    mesh.show()
+    return mesh.show()
