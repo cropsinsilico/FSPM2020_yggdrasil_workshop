@@ -7,7 +7,7 @@ _dir = os.path.dirname(os.path.realpath(__file__))
 def run(mesh, tmin, tmax, tstep):
     mass = 2000.0
     t = tmin
-    
+
     while t <= tmax:
 
         # Grow mesh
@@ -16,8 +16,9 @@ def run(mesh, tmin, tmax, tstep):
         mesh.vertices[:, 2] += mesh.vertices[:, 2] * scale
 
         # Save mesh for this timestep
-        filename = os.path.join(_dir, f'../output/mesh_{t:03.1f}.obj')
-        with open(filename, 'w') as fd:
+        suffix = '{:04.1f}'.format(t)
+        filename_mesh = os.path.join(_dir, f'../output/mesh_{suffix}.obj')
+        with open(filename_mesh, 'w') as fd:
             mesh.export(fd, 'obj')
 
         # Advance time step

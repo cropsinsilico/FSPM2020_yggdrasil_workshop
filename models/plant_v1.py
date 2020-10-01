@@ -8,14 +8,15 @@ from yggdrasil.languages.Python.YggInterface import YggRpcClient, YggOutput
 _dir = os.path.dirname(os.path.realpath(__file__))
 
 def run(mesh, tmin, tmax, tstep):
+    mass = 2000.0
+    t = tmin
     light_rpc = YggRpcClient('light_plant')
     light_out = YggOutput('light')
+    mass = units.add_units(mass, 'g')
     tmin = units.add_units(tmin, 'hrs')
     tmax = units.add_units(tmax, 'hrs')
     tstep = units.add_units(tstep, 'hrs')
-    mass = units.add_units(2000.0, 'g')
-    t = tmin
-    
+
     while t <= tmax:
 
         # Get light data by calling light model

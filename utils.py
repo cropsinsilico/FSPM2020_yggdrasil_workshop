@@ -3,6 +3,7 @@ import glob
 import pickle
 import inspect
 import trimesh
+import difflib
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.lexers.data import YamlLexer
@@ -27,23 +28,55 @@ lexer_map = {'python': PythonLexer,
              'fortran': FortranLexer}
 
 
-def print_source(fname, language=None):
+def print_source_diff(fname1, fname2, language=None):
+    src1 = print_source(fname1, language=language,
+                        return_lines=True).splitlines()
+    src2 = print_source(fname2, language=language,
+                        return_lines=True).splitlines()
+    diff = difflib.ndiff(src1, src2)
+    print('\n'.join(diff), end='')
+
+
+def print_python_source_diff(x1, x2):
+    src1 = print_python_source(x1, return_lines=True).splitlines()
+    src2 = print_python_source(x2, return_lines=True).splitlines()
+    diff = difflib.ndiff(src1, src2)
+    print('\n'.join(diff), end='')
+
+
+def print_yaml_diff(fname1, fname2):
+    src1 = print_yaml(fname1, return_lines=True).splitlines()
+    src2 = print_yaml(fname2, return_lines=True).splitlines()
+    diff = difflib.ndiff(src1, src2)
+    print('\n'.join(diff), end='')
+
+
+def print_source(fname, language=None, return_lines=False):
     with open(fname, 'r') as fd:
         lines = fd.read()
     if language is None:
         language = ext_map[os.path.splitext(fname)[-1]]
-    print(highlight(lines, lexer_map[language](), Terminal256Formatter()))
+    out = highlight(lines, lexer_map[language](), Terminal256Formatter())
+    if return_lines:
+        return out
+    print(out)
 
 
-def print_python_source(x):
-    print(highlight(inspect.getsource(x), PythonLexer(),
-                    Terminal256Formatter()))
+def print_python_source(x, return_lines=False):
+    out = highlight(inspect.getsource(x), PythonLexer(),
+                    Terminal256Formatter())
+    if return_lines:
+        return out
+    print(out)
 
 
-def print_yaml(fname):
+def print_yaml(fname, return_lines=False):
     with open(fname, 'r') as fd:
         lines = fd.read()
-    print(highlight(lines, YamlLexer(), Terminal256Formatter()))
+    out = highlight(lines, YamlLexer(), Terminal256Formatter())
+    if return_lines:
+        return out
+    print(out)
 
 
 def display_last_timestep(with_light=False):

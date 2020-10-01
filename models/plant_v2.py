@@ -8,16 +8,17 @@ from yggdrasil.languages.Python.YggInterface import YggRpcClient, YggOutput, Ygg
 _dir = os.path.dirname(os.path.realpath(__file__))
 
 def run(mesh, tmin, tmax, tstep):
+    mass = 2000.0
+    t = tmin
     light_rpc = YggRpcClient('light_plant')
     light_out = YggOutput('light')
     plant2root = YggTimesync('plant2root')
+    mass = units.add_units(mass, 'g')
     tmin = units.add_units(tmin, 'hrs')
     tmax = units.add_units(tmax, 'hrs')
     tstep = units.add_units(tstep, 'hrs')
-    mass = units.add_units(2000.0, 'g')
-    t = tmin
 
-    while t < tmax:
+    while t <= tmax:
 
         # Synchronize data for time step with the root model
         root_state = {'mass': mass}
@@ -25,6 +26,7 @@ def run(mesh, tmin, tmax, tstep):
         if not flag:
             raise Exception("Error performing time-step synchronization "
                             "with root model.")
+        mass = root_state['mass']
     
         # Get light data by calling light model
         flag, light = light_rpc.call(mesh.vertices[:, 2], t)
@@ -33,7 +35,7 @@ def run(mesh, tmin, tmax, tstep):
         
         # Grow mesh
         # (pretend this is a biologically complex calculation)
-        scale = units.get_data(root_state['mass'] * light / units.add_units(1.0, 'kg'))
+        scale = units.get_data(mass * light / units.add_units(1.0, 'kg'))
         mesh.vertices[:, 2] += mesh.vertices[:, 2] * scale
 
         # Save mesh for this timestep
