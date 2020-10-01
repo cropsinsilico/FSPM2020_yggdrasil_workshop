@@ -10,6 +10,7 @@ from pygments.formatters import Terminal256Formatter
 from pygments.lexers.c_cpp import CLexer, CppLexer
 from pygments.lexers.r import SLexer
 from pygments.lexers.fortran import FortranLexer
+import matplotlib.pyplot as plt
 
 
 ext_map = {'.py': 'python',
@@ -55,3 +56,21 @@ def display_last_timestep(with_light=False):
         mesh.visual.vertex_colors = trimesh.visual.interpolate(
             light/max(light))
     return mesh.show()
+
+
+def plot_mass():
+    from yggdrasil.communication.AsciiTableComm import AsciiTableComm
+    fd = AsciiTableComm('mass', address='output/mass.txt', direction='recv',
+                        as_array=True)
+    flag, masses = fd.recv_dict()
+    plt.plot(masses['time'], masses['root_mass'], label='root mass')
+    plt.plot(masses['time'],
+             masses['plant_mass'].to(masses['root_mass'].units),
+             label='plant_mass')
+    plt.plot(masses['time'],
+             masses['total_mass'].to(masses['root_mass'].units),
+             label='total_mass')
+    plt.xlabel('time (%s)' % masses['time'].units)
+    plt.ylabel('mass (%s)' % masses['root_mass'].units)
+    plt.legend()
+    return plt.show()

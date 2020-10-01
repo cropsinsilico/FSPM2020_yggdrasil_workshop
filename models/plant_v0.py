@@ -5,11 +5,14 @@ import argparse
 _dir = os.path.dirname(os.path.realpath(__file__))
 
 def run(mesh, tmin, tmax, tstep):
+    mass = 2000.0
     t = tmin
-    while t < tmax:
+    
+    while t <= tmax:
 
         # Grow mesh
-        scale = t / 300.0
+        # (pretend this is a biologically complex calculation)
+        scale = mass * t / 150000.0
         mesh.vertices[:, 2] += mesh.vertices[:, 2] * scale
 
         # Save mesh for this timestep
@@ -26,9 +29,9 @@ def run(mesh, tmin, tmax, tstep):
 # Parse command-line arguments
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Simulate plant growth over time.")
-    parser.add_argument('tmin', help='Starting time (in days)', type=float)
-    parser.add_argument('tmax', help='Ending time (in days)', type=float)
-    parser.add_argument('tstep', help='Time step (in days)', type=float)
+    parser.add_argument('tmin', help='Starting time (in hours)', type=float)
+    parser.add_argument('tmax', help='Ending time (in hours)', type=float)
+    parser.add_argument('tstep', help='Time step (in hours)', type=float)
     parser.add_argument('--meshfile', help='Path to file where mesh is stored.',
                         default='../meshes/plants-2.obj')
     args = parser.parse_args()
