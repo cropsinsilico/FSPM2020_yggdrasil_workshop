@@ -28,27 +28,52 @@ lexer_map = {'python': PythonLexer,
              'fortran': FortranLexer}
 
 
+def number_lines(lines, for_diff=False):
+    as_str = False
+    if isinstance(lines, str):
+        as_str = True
+        lines = lines.splitlines()
+    out = []
+    i = 0
+    for line in lines:
+        if for_diff and line.startswith(('-', '?')):
+            out.append('    ' + line)
+        else:
+            i += 1
+            out.append('%2d: %s' % (i, line))
+    if as_str:
+        return '\n'.join(out)
+    return out
+
+
+def print_lines_numbered(lines, end=None, for_diff=False):
+    if isinstance(lines, str):
+        lines = lines.splitlines()
+    lines_no = number_lines(lines, for_diff=for_diff)
+    print('\n'.join(lines_no), end=end)
+
+
 def print_source_diff(fname1, fname2, language=None):
     src1 = print_source(fname1, language=language,
                         return_lines=True).splitlines()
     src2 = print_source(fname2, language=language,
                         return_lines=True).splitlines()
     diff = difflib.ndiff(src1, src2)
-    print('\n'.join(diff), end='')
+    print_lines_numbered(diff, end='', for_diff=True)
 
 
 def print_python_source_diff(x1, x2):
     src1 = print_python_source(x1, return_lines=True).splitlines()
     src2 = print_python_source(x2, return_lines=True).splitlines()
     diff = difflib.ndiff(src1, src2)
-    print('\n'.join(diff), end='')
+    print_lines_numbered(diff, end='', for_diff=True)
 
 
 def print_yaml_diff(fname1, fname2):
     src1 = print_yaml(fname1, return_lines=True).splitlines()
     src2 = print_yaml(fname2, return_lines=True).splitlines()
     diff = difflib.ndiff(src1, src2)
-    print('\n'.join(diff), end='')
+    print_lines_numbered(diff, end='', for_diff=True)
 
 
 def print_source(fname, language=None, return_lines=False):
@@ -59,7 +84,7 @@ def print_source(fname, language=None, return_lines=False):
     out = highlight(lines, lexer_map[language](), Terminal256Formatter())
     if return_lines:
         return out
-    print(out)
+    print_lines_numbered(out)
 
 
 def print_python_source(x, return_lines=False):
@@ -67,16 +92,19 @@ def print_python_source(x, return_lines=False):
                     Terminal256Formatter())
     if return_lines:
         return out
-    print(out)
+    print_lines_numbered(out)
 
 
-def print_yaml(fname, return_lines=False):
+def print_yaml(fname, return_lines=False, no_numbers=False):
     with open(fname, 'r') as fd:
         lines = fd.read()
     out = highlight(lines, YamlLexer(), Terminal256Formatter())
     if return_lines:
         return out
-    print(out)
+    if no_numbers:
+        print(out)
+    else:
+        print_lines_numbered(out)
 
 
 def display_last_timestep(with_light=False):

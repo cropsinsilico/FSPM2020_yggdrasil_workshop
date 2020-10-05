@@ -6,3 +6,5 @@ dependencies:
   - trimesh
   - networkx
   - pygments
+  - rise
+  - jupyter_contrib_nbextensions

@@ -21,19 +21,27 @@ def run(mesh, tmin, tmax, tstep):
 
     while t <= tmax:
 
-        # Synchronize data for time step with the root model
+        # Perform send portion of call to synchronize data for time step
+        # with the root model
         root_state = {'mass': mass}
-        flag, root_state = plant2root.call(t, root_state)
+        flag = plant2root.send(t, root_state)
         if not flag:
             raise Exception("Error performing time-step synchronization "
                             "with root model.")
-        mass = root_state['mass']
-    
+
         # Get light data by calling light model
         flag, light = light_rpc.call(mesh.vertices[:, 2], t)
         if not flag:
             raise Exception("Error calling light model")
-        
+
+        # Perform receive portion of call to synchronize data for time step
+        # with the root model
+        flag, root_state = plant2root.recv()
+        if not flag:
+            raise Exception("Error performing recv for time-step "
+                            "synchronization with root model.")
+        mass = root_state['mass']
+
         # Grow mesh
         # (pretend this is a biologically complex calculation)
         scale = units.get_data(mass * light / units.add_units(1.0, 'kg'))
