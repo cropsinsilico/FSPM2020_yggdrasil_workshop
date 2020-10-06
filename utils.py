@@ -59,21 +59,21 @@ def print_source_diff(fname1, fname2, language=None):
     src2 = print_source(fname2, language=language,
                         return_lines=True).splitlines()
     diff = difflib.ndiff(src1, src2)
-    print_lines_numbered(diff, end='', for_diff=True)
+    print_lines_numbered(diff, for_diff=True)
 
 
 def print_python_source_diff(x1, x2):
     src1 = print_python_source(x1, return_lines=True).splitlines()
     src2 = print_python_source(x2, return_lines=True).splitlines()
     diff = difflib.ndiff(src1, src2)
-    print_lines_numbered(diff, end='', for_diff=True)
+    print_lines_numbered(diff, for_diff=True)
 
 
 def print_yaml_diff(fname1, fname2):
     src1 = print_yaml(fname1, return_lines=True).splitlines()
     src2 = print_yaml(fname2, return_lines=True).splitlines()
     diff = difflib.ndiff(src1, src2)
-    print_lines_numbered(diff, end='', for_diff=True)
+    print_lines_numbered(diff, for_diff=True)
 
 
 def print_source(fname, language=None, return_lines=False):
