@@ -107,7 +107,7 @@ def print_yaml(fname, return_lines=False, no_numbers=False):
         print_lines_numbered(out)
 
 
-def display_last_timestep(with_light=False):
+def display_last_timestep(with_light=False, with_masses=False):
     last_mesh = sorted(glob.glob('output/mesh_*.obj'))[-1]
     mesh = trimesh.load_mesh(last_mesh)
     if with_light:
@@ -116,6 +116,9 @@ def display_last_timestep(with_light=False):
             light = pickle.load(fd)
         mesh.visual.vertex_colors = trimesh.visual.interpolate(
             light/max(light))
+    if with_masses:
+        plot_mass()
+        return mesh.show()
     return mesh.show()
 
 
