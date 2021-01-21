@@ -1,4 +1,5 @@
 #define _USE_MATH_DEFINES  // Required to use M_PI with MSVC
+#include <math.h>
 
 int light(double* height, uint64_t length_height, double time,
 	  double*& intensity, uint64_t& length_intensity) {
