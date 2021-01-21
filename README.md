@@ -10,18 +10,33 @@ References:
 ## Running Notebook Locally
 
 ### Download:
+
+```
 git clone https://github.com/cropsinsilico/FSPM2020_yggdrasil_workshop.git
 cd FSPM2020_yggdrasil_workshop
+```
 
 ### Set up environment:
+
+```
 conda env create -f environment.yml
 conda activate fspm-yggdrasil-environment
+```
 
 ### Finish Installing yggdrasil (linux/mac):
+
+```
 source postBuild
+```
 
 ### Finish Installing yggdrasil (windows):
+
+```
 call postBuild.bat
+```
 
 ### Run notebook:
+
+```
 jupyter notebook
+```
