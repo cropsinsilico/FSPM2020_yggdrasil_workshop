@@ -11,7 +11,7 @@ def run(tmin, tmax, tstep):
     tmax = units.add_units(tmax, 'days')
     tstep = units.add_units(tstep, 'days')
     t = tmin
-    mass = 0
+    mass = units.add_units(0.0, 'kg')
 
     while t <= tmax:
 
